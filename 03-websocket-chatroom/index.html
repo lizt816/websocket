@@ -30,7 +30,8 @@
     var socket = new WebSocket('ws://192.168.1.11:3000')
     console.log(socket,"///")
     socket.onerror = function (err){
-        console.log(err+'链接失败了')
+        console.log(err)
+        console.log('链接失败了')
         div.innerHTML = err+'链接失败了'
     };
     socket.onopen = function (params) {
