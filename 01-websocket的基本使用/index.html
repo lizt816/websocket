@@ -21,13 +21,14 @@
     显示结果
     <div></div>
 </body>
-<script>
+<script type="module">
+    import localConfig from '../localConfig.js'
     var input = document.querySelector('input')
     var button = document.querySelector('button')
     var div = document.querySelector('div')
     // webSocket使用
     // 首先创建webSocket对象
-    var socket = new WebSocket('ws://192.168.1.11:3000')
+    var socket = new WebSocket('ws://'+localConfig.wsIp)
     console.log(socket,"///")
     socket.onerror = function (err){
         console.log(err+'链接失败了')
