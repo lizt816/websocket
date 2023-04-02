@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>聊天室</title>
     <style>
         /* div{
             width: 200px;
@@ -21,43 +20,5 @@
     显示结果
     <div></div>
 </body>
-<script>
-    var input = document.querySelector('input')
-    var button = document.querySelector('button')
-    var div = document.querySelector('div')
-    // webSocket使用
-    // 首先创建webSocket对象
-    var socket = new WebSocket('ws://192.168.31.146:3000')
-    socket.onerror = function (err){
-        console.log(err,'---链接失败了')
-        div.innerHTML = err+'链接失败了'
-    };
-    socket.onopen = function (params) {
-        console.log(params,'---链接服务成功了')
-        // div.innerHTML = params+'链接服务成功了'
-    }
-    socket.onmessage = function (params) {
-        console.log(params,"接受数据"+params.data+"//////")
-        // div.innerHTML = params.data
-        // 创建一个元素  
-        let dv = document.createElement('div')
-        dv.innerText = params.data
-        div.appendChild(dv)
-    }
-    /* 鼠标聚焦时，回车事件 */
-    function enterkey(e){
-        if(e.key === 'Enter'){
-           send()
-        }
-    }
-    function send() {
-        let value = input.value
-        if(!value)return;
-        socket.send(value)
-        input.value = ''
-    }
-    socket.onclose = function () {
-        div.innerHTML = '服务断开了!不是前端点击断开,而是服务器断开,前端要做什么处理的事件'
-    }
-</script>
+   <script type="module" src="../js/03-websocket-chatroom.js"></script>
 </html>

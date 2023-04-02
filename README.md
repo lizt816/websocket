@@ -3,6 +3,8 @@ dom
 下载依赖需要在《02-websokcte-server》的文件内用npm i 去下载
 然后在服务器使用 node .\app.js  开启服务器
 
+运行index.html结构需要使用vscode的插件 : Live Server,因为使用了ES6的语法，浏览器会报跨域问题
+
 多人聊天室需要下载相关的依赖
  npm install -g yarn
  yarn add nodejs-websocket 
