@@ -38,7 +38,8 @@ const server = ws.createServer(conn=>{
 function broadcast(msg) {
     // server.connections 代表所有的用户
     server.connections.forEach(item=>{
-        item.send(msg)
+        let data = JSON.stringify(msg)
+        item.send(msg.masg)
     })
 }
 
