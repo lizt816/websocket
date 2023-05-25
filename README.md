@@ -9,7 +9,10 @@ dom
  npm install -g yarn
  yarn add nodejs-websocket 
  查看版本的时候报错，系统不支持这脚本，解决方法：
- 在开始按钮上搜索powershell已管理员身份运行，
+ 在开始按钮上搜索powershell已管理员身份运行， 
+ 在开始按钮上搜索powershell已管理员身份运行， 
+ 在开始按钮上搜索powershell已管理员身份运行， 
+ 三遍-----****
  然后运行命令：set-ExecutionPolicy RemoteSigned
  然后选择 y     //  执行策略更改为 RemoteSigned
  然后回到项目：

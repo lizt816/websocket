@@ -1,10 +1,10 @@
-import localConfig from './localConfig.js'
+// import localConfig from './localConfig.js'
     var input = document.querySelector('input')
     var button = document.querySelector('button')
     var div = document.querySelector('div')
     // webSocket使用
     // 首先创建webSocket对象
-    var socket = new WebSocket('ws://'+localConfig.wsIp+':3000')
+    var socket = new WebSocket('ws://192.168.0.107:3000')
     console.log(socket,"///")
     socket.onerror = function (err){
         console.log(err+'链接失败了')

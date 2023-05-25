@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <title>原生websocket聊天室</title>
+    <style>
+        div{
+        }
+    </style>
+</head>
+<body>
+    <!-- 输入的内容 -->
+    <input type="text" placeholder="请输入你的内容">
+    <button onclick="emitSend()">发生请求</button>
+    <button onclick="overWebsokcte()">结束</button>
+    显示结果
+    <div></div>
+</body>
+   <script src="/socket.io/socket.io.js"></script>
+   <script>
+     let socket = io('http://127.0.0.1:3000')
+     let input = document.querySelector('input')
+     let button = document.querySelector('button')
+     let div = document.querySelector('div')
+     
+     socket.on('getMessge',(data)=>{
+      console.log(data,"ddd")
+      let dv = document.createElement('div')
+        let span = document.createElement('span')
+        span.innerHTML = '-----'+data.time
+        dv.innerHTML = data.message
+     }) 
+     function emitSend(){
+      socket.emit('emitSend',input.value) 
+     }
+   </script>
+</html>
