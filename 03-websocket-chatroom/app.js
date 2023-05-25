@@ -9,7 +9,11 @@ const server = ws.createServer(conn=>{
     count++   // 有人加入 
     conn.userName = `用户${count}`  // 创建一个userName 给他取名叫 用户 count：数量  
     // 1. 这个时候需要 告诉所有人 有人进来了 
-    broadcast(`${conn.userName}进入了聊天室`)  // 告诉所以用户有人进来了
+    broadcast({
+        type:0,
+        masg:`${conn.userName}进入了聊天室`,
+
+    })
 
     conn.on('text',(data)=>{
         console.log(data,'接收的消息')
@@ -34,7 +38,8 @@ const server = ws.createServer(conn=>{
 function broadcast(msg) {
     // server.connections 代表所有的用户
     server.connections.forEach(item=>{
-        item.send(msg)
+        let data = JSON.stringify(msg)
+        item.send(msg.masg)
     })
 }
 
