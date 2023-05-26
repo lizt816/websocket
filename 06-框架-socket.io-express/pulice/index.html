@@ -100,11 +100,7 @@
       myInfo.appendChild(myInfoImg)
       myInfo.appendChild(divMessage)
 
-      // 发送消息告诉聊天室有人进来了
-      // <div class="message-list">
-      //    <!-- <div class="time">
-      //       2023年5月26日16:03:18
-      //    </div> -->
+      // 发送消息告诉聊天室有人进来了,发送群消息
       let divUser = document.createElement('div')
       divUser.classList.add('time');
       divUser.innerText = data.data.userName + data.data.time
