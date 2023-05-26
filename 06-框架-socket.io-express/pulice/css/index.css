@@ -146,6 +146,8 @@ body{
 .my-info img{
  flex: none;
  margin: 0 10px 0 0;
+ width: 30px;
+ height: 30px;
 }
 
 .chat{

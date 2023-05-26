@@ -26,10 +26,6 @@
      <div class="content-box">
       <div class="user">
        <div class="my-info">
-         <img width="30" height="30" src="./img/img1.jpg" alt="">
-        <div>
-         123
-        </div>
        </div>
        <div style="color: white;">
         用户列表
@@ -48,21 +44,21 @@
          *** (<span>22</span>)
         </div>
         <div class="message-list">
-         <div class="time">
+         <!-- <div class="time">
             2023年5月26日16:03:18
-         </div>
-         <div class="user-r flex-r">
+         </div> -->
+         <!-- <div class="user-r flex-r">
           <div class="message message-r">
            111
           </div>
           <img width="30" height="30" src="./img/img1.jpg" alt="">
-         </div>
-         <div class="user-r flex-l">
+         </div> -->
+         <!-- <div class="user-r flex-l">
           <img width="30" height="30" src="./img/img1.jpg" alt="">
           <div class="message message-l">
            111
           </div>
-         </div>
+         </div> -->
         </div>
         <div class="message-send">
          <div class="send-img flex-center flex">
@@ -88,20 +84,31 @@
    <script src="/socket.io/socket.io.js"></script>
    <script>
      let socket = io('http://127.0.0.1:80')
-     let input = document.querySelector('input')
-     let button = document.querySelector('button')
-     let div = document.querySelector('div')
+     let messageList = document.querySelector('message-list')
      socket.on('getUserInfo',(data)=>{
-      console.log(data)
       maskShow(data.message)
-      
-      // let dv = document.createElement('div')
-      // let span = document.createElement('span')
-      // span.innerHTML = '-----'+data.time
-      // dv.innerHTML = data.message
-      // div.appendChild(dv)
-      // span.style.color = 'pink'
-      // dv.appendChild(span)
+
+
+      // 显示左上角图片
+      let myInfo = document.querySelector('.user > .my-info')
+      let myInfoImg = document.createElement('img')
+      let divMessage = document.createElement('div')
+
+      myInfoImg.src = data.data.img
+      divMessage.innerText = data.data.userName
+
+      myInfo.appendChild(myInfoImg)
+      myInfo.appendChild(divMessage)
+
+      // 发送消息告诉聊天室有人进来了
+      // <div class="message-list">
+      //    <!-- <div class="time">
+      //       2023年5月26日16:03:18
+      //    </div> -->
+      let divUser = document.createElement('div')
+      divUser.classList.add('time');
+      divUser.innerText = data.data.userName + data.data.time
+      messageList.appendChild(divUser)
      })
 
      function maskShow(message){

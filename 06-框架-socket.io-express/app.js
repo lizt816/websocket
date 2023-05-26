@@ -25,6 +25,7 @@ io.on('connection', function (socket) {
   if(user > -1){
    info = userInfoList[user]
    message = '登录成功'
+   info.time = new Date().toLocaleTimeString()
   } else{
    userList.push(data.userName)
    userInfoList.push(data)
@@ -36,3 +37,5 @@ io.on('connection', function (socket) {
    });
  });
 })
+
+
