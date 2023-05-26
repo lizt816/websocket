@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <title>socket.io-express</title>
+    <link href="./css/index.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+   <div class="login">
+     <!-- 登录 -->
+     <div class="login-box">
+       <h4>登录功能</h4>
+       <div>
+        用户名称：<input type="text" id="userName">
+       </div>
+       <ul class="login-img">
+       </ul>
+       <div class="login-button">
+         登录
+       </div>
+     </div>
+   </div>
+   <div class="content" style="display: none;">
+     <div class="content-box">
+      <div class="user">
+       <div class="my-info">
+         <img width="30" height="30" src="./img/img1.jpg" alt="">
+        <div>
+         123
+        </div>
+       </div>
+       <div style="color: white;">
+        用户列表
+       </div>
+       <div class="user-list">
+         <div class="my-info">
+          <img width="30" height="30" src="./img/img1.jpg" alt="">
+          <div>
+           123
+          </div>
+         </div>
+       </div>
+      </div>
+      <div class="chat flex flex-y">
+        <div class="chat-hade">
+         *** (<span>22</span>)
+        </div>
+        <div class="message-list">
+         <div class="time">
+            2023年5月26日16:03:18
+         </div>
+         <div class="user-r flex-r">
+          <div class="message message-r">
+           111
+          </div>
+          <img width="30" height="30" src="./img/img1.jpg" alt="">
+         </div>
+         <div class="user-r flex-l">
+          <img width="30" height="30" src="./img/img1.jpg" alt="">
+          <div class="message message-l">
+           111
+          </div>
+         </div>
+        </div>
+        <div class="message-send">
+         <div class="send-img flex-center flex">
+          <img width="20" height="20" src="./img/smilingFace.png" alt="">
+          <img width="16" height="16" src="./img/scissors.png" alt="">
+          <img width="23" height="23" src="./img/folder.png" alt="">
+         </div>
+         <textarea id="textarea" name="" id="" cols="30" rows="10"></textarea>
+         <div class="send-buttom flex flex-r flex-center">
+          <div class="buttom-1">
+           按下Ctrl+Enter发送
+          </div>
+          <div class="buttom-2">
+           发送
+          </div>
+         </div>
+        </div>
+      </div>
+     </div>
+   </div>
+   <div class="mask">21456456</div>
+</body>
+   <script src="/socket.io/socket.io.js"></script>
+   <script>
+     let socket = io('http://127.0.0.1:80')
+     let input = document.querySelector('input')
+     let button = document.querySelector('button')
+     let div = document.querySelector('div')
+     socket.on('getUserInfo',(data)=>{
+      console.log(data)
+      maskShow(data.message)
+      
+      // let dv = document.createElement('div')
+      // let span = document.createElement('span')
+      // span.innerHTML = '-----'+data.time
+      // dv.innerHTML = data.message
+      // div.appendChild(dv)
+      // span.style.color = 'pink'
+      // dv.appendChild(span)
+     })
+
+     function maskShow(message){
+      let mask = document.createElement('div')
+      let body = document.body;
+      mask.innerHTML = message
+      body.appendChild(mask);
+      mask.classList.add('mask');
+      mask.style.animation = 'mask 6s linear'
+      setTimeout(() => {
+       mask.remove();
+      }, 6000);
+     }
+   </script>
+   <script src="./js/logIn.js"></script>
+</html>

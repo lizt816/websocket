@@ -1,0 +1,293 @@
+body{
+ margin: 0;
+ padding: 0;
+}
+.login{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background: #cccccc94;
+  text-align: center;
+}
+.login ul{
+ display: flex;
+ flex-wrap: wrap;
+ padding: 0;
+ margin: 0;
+}
+.login .login-box{
+ border: 1px solid pink;
+ background-color: white;
+ padding: 0 10px;
+ color: pink;
+}
+
+#userName{
+ border: 1px solid pink;
+ border-radius: 3px;
+ padding: 3px 4px;
+}
+#userName:focus{
+  outline: none;
+  border: 1px solid #4ce94c;
+}
+
+.login-button{
+ width: 80px;
+ margin: 0 auto 13px;
+ padding: 4px;
+ background: pink;
+ border-radius: 5px;
+ line-height: 20px;
+ color: #fff;
+ cursor: pointer;
+ transition-duration: .5s!important;
+ -webkit-user-select:none;
+ -moz-user-select:none;
+ -ms-user-select:none;
+ user-select:none;
+}
+
+.login-button:hover{
+ background: #f3d0d6;
+}
+
+
+.login ul li{
+ cursor: pointer;
+ border: 2px #0000 solid;
+ list-style-type: none;
+  width: 50px;
+  height: 50px;
+  --n: 8;   
+  --gap: calc((100% - 15px * var(--n)) / var(--n) / 2);
+  margin: 10px var(--gap);
+}
+
+.login ul li:hover{
+ border-color: pink !important;
+}
+
+.login ul .li-b{
+ border-color: pink !important;
+}
+
+.login ul li img{
+  width: 100%;
+  height: 100%;
+}
+
+.mask{
+  position: fixed;
+  top: -5vh;
+  margin: auto;
+  min-width: 100px;
+  text-align: center;
+  left: 50%;
+  transform: translate(-50%,0);
+  background: pink;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 5px;
+  z-index: 1;
+}
+@keyframes mask{
+ 0%   {opacity: 0; top: -5vh;}
+ 20%   {opacity: 0; top: 5vh;}
+ 20%   {opacity: .5; top: 9vh;}
+ 40%  {opacity: 1;top: 9vh;}
+ 70%  {opacity: 1;top: 9vh;}
+ 80%  {opacity: 1;top: 7vh;}
+ 90%  {opacity: 0;top: 5vh;}
+ 100% {opacity: 0;top: -5vh;}
+}
+
+
+.content{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background: #cccccc94;
+  text-align: center;
+}
+
+.content-box{
+ min-width: 700px;
+ height: 500px;
+ display: flex;
+ background-color: #fff;
+}
+
+.content-box{
+ min-width: 700px;
+ height: 500px;
+ display: flex;
+ background-color: #fff;
+}
+
+.user{
+  background-color: #5a5a5a;
+  width: 160px;
+}
+
+.my-info{
+ display: flex;
+ align-items: center;
+ padding: 10px 13px;
+ color: #fff;
+}
+
+.my-info img{
+ flex: none;
+ margin: 0 10px 0 0;
+}
+
+.chat{
+ flex: 1;
+}
+
+.chat-hade{
+ padding: 10px 0;
+ border-bottom: 1px solid #ccc;
+ margin: 0px 10px;
+}
+
+.message-list{
+ padding: 5px 10px;
+ flex: 1;
+ min-height: 260px;
+}
+
+.user-r{
+ text-align: left;
+ padding: 5px;
+ display: flex;
+}
+
+.message{
+ background: pink;
+ color: #fff;
+ position: relative;
+ padding: 2px 8px;
+ border-radius: 5px;
+ max-width: 280px;
+}
+
+.message-l::before{
+ content: '';
+ border: 5px solid #0000;
+ position: absolute;
+ left: -10px;
+ border-right-color: pink;
+ top: 8px;
+}
+
+.message-r::before{
+ content: '';
+ border: 5px solid #0000;
+ position: absolute;
+ right: -10px;
+ border-left-color: pink;
+ top: 8px;
+}
+
+.flex-l{
+ justify-content: left;
+}
+.flex-l img{
+ margin: 0 10px 0 0;
+}
+
+.flex-r{
+ justify-content: right;
+}
+
+.flex-r img{
+ margin: 0 0 0 10px;
+}
+
+.time{
+ font-size: 12px;
+ color: #a5a5a5;
+}
+
+.flex{
+ display: flex;
+}
+
+.flex-y{
+ flex-direction: column;
+}
+
+.flex-center{
+ align-items: center;
+}
+
+.send-img img{
+ margin: 0 0 0 10px;
+ cursor: pointer;
+}
+
+.message-send{
+ margin: 0 10px;
+ padding: 6px 0;
+ border-top: 1px solid #ccc;
+}
+
+#textarea{
+ max-width: 100%;
+ min-width: 100%;
+ border: none;
+ min-height: 100px;
+ max-height: 100px;
+ resize: none;
+ scrollbar-color: rebeccapurple green;
+ scrollbar-width: thin;
+ padding: 3px 0;
+}
+
+#textarea::-webkit-scrollbar{
+ width:5px;            
+ height:5px;          
+ background-color: #fff;
+}
+
+#textarea::-webkit-scrollbar-thumb {
+ background-color: #e7e7e7; 
+ border-radius: 32px;          
+}
+
+#textarea:focus{
+ outline: none;
+ width: 100%;
+ border: none;
+}
+
+.send-buttom{
+
+}
+.buttom-1{
+  color: #ccc;
+  font-size: 12px;
+}
+.buttom-2{
+ padding: 2px 15px;
+ background: #fff;
+ border: 1px solid #9b9b9b;
+ font-size: 14px;
+ margin: 0 0 0 10px;
+ border-radius: 5px;
+ cursor: pointer;
+ transition:all .5s;
+}
+.buttom-2:hover{
+ background-color: pink;
+ border: 1px solid pink;
+ color: #fff;
+}
