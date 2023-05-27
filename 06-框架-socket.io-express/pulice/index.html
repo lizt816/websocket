@@ -24,54 +24,41 @@
    </div>
    <div class="content" style="display: none;">
      <div class="content-box">
-      <div class="user">
+      <div class="user flex flex-y">
        <div class="my-info">
        </div>
-       <div style="color: white;">
+       <div style="color: white; padding: 0 0 2px ;">
         用户列表
        </div>
        <div class="user-list">
-         <div class="my-info">
-          <img width="30" height="30" src="./img/img1.jpg" alt="">
-          <div>
-           123
-          </div>
-         </div>
        </div>
       </div>
       <div class="chat flex flex-y">
         <div class="chat-hade">
-         *** (<span>22</span>)
+         聊天室 (<span>0</span>)
         </div>
         <div class="message-list">
-         <!-- <div class="time">
-            2023年5月26日16:03:18
-         </div> -->
-         <!-- <div class="user-r flex-r">
-          <div class="message message-r">
-           111
-          </div>
-          <img width="30" height="30" src="./img/img1.jpg" alt="">
-         </div> -->
-         <!-- <div class="user-r flex-l">
-          <img width="30" height="30" src="./img/img1.jpg" alt="">
-          <div class="message message-l">
-           111
-          </div>
-         </div> -->
         </div>
         <div class="message-send">
          <div class="send-img flex-center flex">
-          <img width="20" height="20" src="./img/smilingFace.png" alt="">
+          <div style="width: 20px;height: 20px;position: relative;padding: 0 10px 0 0;">
+           <img width="100%" height="100%" class="emoji-img" onclick="clickEmoji()" src="./img/smilingFace.png" alt="">
+           <div class="emoji" onmouseleave="mouseleaveEmoji()">
+            <div class="emoji-box">
+            </div>
+           </div>
+           <span class="biaos"></span>
+          </div>
           <img width="16" height="16" src="./img/scissors.png" alt="">
-          <img width="23" height="23" src="./img/folder.png" alt="">
+          <img width="23" height="23" onclick="fileclick()" src="./img/folder.png" alt="">
+          <input style="display: none;" type="file" id="file" onchange="changeFile(event)">
          </div>
-         <textarea id="textarea" name="" id="" cols="30" rows="10"></textarea>
+         <textarea  id="textarea" name="" id="" cols="30" rows="10"></textarea>
          <div class="send-buttom flex flex-r flex-center">
           <div class="buttom-1">
            按下Ctrl+Enter发送
           </div>
-          <div class="buttom-2">
+          <div class="buttom-2" onclick="sendMessage()">
            发送
           </div>
          </div>
@@ -79,45 +66,8 @@
       </div>
      </div>
    </div>
-   <div class="mask">21456456</div>
 </body>
    <script src="/socket.io/socket.io.js"></script>
-   <script>
-     let socket = io('http://127.0.0.1:80')
-     let messageList = document.querySelector('message-list')
-     socket.on('getUserInfo',(data)=>{
-      maskShow(data.message)
-
-
-      // 显示左上角图片
-      let myInfo = document.querySelector('.user > .my-info')
-      let myInfoImg = document.createElement('img')
-      let divMessage = document.createElement('div')
-
-      myInfoImg.src = data.data.img
-      divMessage.innerText = data.data.userName
-
-      myInfo.appendChild(myInfoImg)
-      myInfo.appendChild(divMessage)
-
-      // 发送消息告诉聊天室有人进来了,发送群消息
-      let divUser = document.createElement('div')
-      divUser.classList.add('time');
-      divUser.innerText = data.data.userName + data.data.time
-      messageList.appendChild(divUser)
-     })
-
-     function maskShow(message){
-      let mask = document.createElement('div')
-      let body = document.body;
-      mask.innerHTML = message
-      body.appendChild(mask);
-      mask.classList.add('mask');
-      mask.style.animation = 'mask 6s linear'
-      setTimeout(() => {
-       mask.remove();
-      }, 6000);
-     }
-   </script>
+   <script src="./js/index.js"></script>
    <script src="./js/logIn.js"></script>
 </html>

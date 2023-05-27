@@ -1,4 +1,5 @@
 let express = require('express');
+const { Socket } = require('socket.io');
 var app = express() ;
 var server = require('http').Server(app);
 var io = require('socket.io')(server) ;
@@ -22,20 +23,65 @@ io.on('connection', function (socket) {
   let user = userList.indexOf(data.userName)
   let message = '注册成功'
   let info = data
+  info.time = new Date().toLocaleTimeString()
   if(user > -1){
    info = userInfoList[user]
    message = '登录成功'
-   info.time = new Date().toLocaleTimeString()
   } else{
    userList.push(data.userName)
-   userInfoList.push(data)
+   userInfoList.push(info)
   }
+  socket.userName = data.userName
   socket.emit('getUserInfo', { 
-    code:200,
-    data:info,
-    message
-   });
+   code:200,
+   data:info,
+   message
+  });
+  io.emit('addUser', { 
+   code:200,
+   data:info,
+   message
+  })
+  io.emit('userInfoList', { 
+   code:200,
+   data:userInfoList,
+   message:'所有用户'
+  })
  });
+
+ socket.on('messageImg',(data)=>{
+  io.emit('messageImg', { 
+   code:200,
+   data,
+   message:'发送成功'
+  })
+ })
+
+ socket.on('userSendMessage',(data)=>{
+  io.emit('userSendMessage', { 
+   code:200,
+   data,
+   message:'发送成功'
+  })
+ })
+
+ socket.on('disconnect', ()=>{ 
+  // 有人退出时，触发
+  if(!socket.userName)return;
+   let idx = userList.indexOf(socket.userName)  // 匹配到当前用户
+   io.emit('delUser', { 
+    code:200,
+    data:userInfoList[idx],
+    message:'退出了聊天'
+   })
+   userList.splice(idx,1)
+   userInfoList.splice(idx,1)
+   io.emit('userInfoList', { 
+    code:200,
+    data:userInfoList,
+    message:'所有用户'
+   })
+});
 })
 
 

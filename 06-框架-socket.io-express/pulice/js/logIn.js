@@ -46,7 +46,6 @@ function setLi(li) {
   // 添加当前点击的 li 的 class
   let img = this.querySelector('img')
   getImg = img.src
-  console.log(getImg,"getImg")
   this.classList.add('li-b');
  })
 }
