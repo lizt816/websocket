@@ -1,5 +1,4 @@
 let express = require('express');
-const { Socket } = require('socket.io');
 var app = express() ;
 var server = require('http').Server(app);
 var io = require('socket.io')(server) ;
@@ -10,12 +9,7 @@ server.listen(80,()=>{
 });
 // WARNING: app.listen(80) will NOT work here!
 
-app.use(express.static('pulice'))
-
-app.get('/', function (req, res) {
- // res.sendFile(__dirname + '/index.html');
- res.redirect('/index.html')
-});
+app.use('/',express.static('pulice'))
 
 io.on('connection', function (socket) {
  socket.on( 'setUserInfo' , function (data) {
