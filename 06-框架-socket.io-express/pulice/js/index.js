@@ -20,7 +20,6 @@
   let divUser = document.createElement('div')
   divUser.classList.add('time');
   divUser.innerText = data.data.time + ': ' +  data.data.userName+'加入聊天室'
-  maskShow(data.data.userName+'加入聊天室')
   messageList.appendChild(divUser)
   nodeScrollIntoView()
 })
