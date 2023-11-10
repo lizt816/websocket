@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+ <title>TradingView Charting Library demo</title>
+
+ <!-- Fix for iOS Safari zooming bug -->
+ <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+ <script type="text/javascript" src="./charting_library/charting_library.min.js"></script>
+ <script type="text/javascript" src="./datafeeds/udf/dist/polyfills.js"></script>
+ <script type="text/javascript" src="./datafeeds/udf/dist/bundle.js"></script>
+</head>
+
+<body style="margin:0px;">
+ <div id="tv_chart_container"></div>
+ <script type="text/javascript">
+
+  let socket,timer;
+  let openPrice = 100; // 初始开盘价   全局使用
+  function connectWebSocket() {
+   socket = new WebSocket('ws://192.168.0.107:8081');
+   socket.onopen = function (event) {
+    // 连接成功
+    console.log("WebSocket连接成功");
+    socket.send(openPrice)
+    clearTimeout(timer);
+   };
+   socket.onclose = function (event) {
+    // 连接关闭
+    console.log("WebSocket连接已关闭");
+    // 在延迟后重新连接
+    timer = setTimeout(connectWebSocket, 1000);
+   };
+   socket.onerror = function (event) {
+    // 发生错误
+    console.log("WebSocket错误：" + event);
+    // onclose事件将被触发，因此此处不需要重新连接
+   };
+  }
+
+  // 初始连接尝试
+  connectWebSocket();
+  function initOnReady() {
+   new TradingView.widget({
+    fullscreen: true,
+    symbol: '股票---', // 产品
+    interval: '1', // 时间间隔
+    timezone: 'Asia/Shanghai', // 默认时区
+    library_path: "charting_library/",
+    container_id: 'tv_chart_container', // 指定要包含widget的DOM元素id。
+    locale: 'ru', //  语言
+    charts_storage_url: 'http://saveload.tradingview.com',
+    locale: "zh",
+    datafeed: createFeed(),
+    // 图表设置，可以自定义。当您创建一个实现接口的对象时，只需将它传递给图表库Widget的构造函数。})复制代码
+   });
+  }
+  function getChartData(resolution, rangeStartDate, rangeEndDate, firstDataRequest, tm = 180) {
+   // 创建包含历史 K 线数据的数组
+   let list = [];
+   for (let i = tm; i > 0; i--) {
+    openPrice += Math.random() * 2 - 1; // 随机波动开盘价
+    const closePrice = openPrice + (Math.random() * 4 - 2); // 随机波动收盘价
+    const highPrice = Math.max(openPrice, closePrice) + (Math.random() * 4); // 随机波动最高价
+    const lowPrice = Math.min(openPrice, closePrice) - (Math.random() * 4); // 随机波动最低价
+    const volume = Math.floor(Math.random() * 2000) + 1000; // 随机生成成交量
+    let time = new Date();
+    time.setMinutes(time.getMinutes() - i);
+    list.push({
+     time, // 以分为单位的时间间隔
+     open: openPrice,
+     high: highPrice,
+     low: lowPrice,
+     close: closePrice,
+     volume: volume,
+    });
+   }
+   return list;
+  }
+  // 创建k线配置
+  function createFeed() {
+   let that = this;
+   let Datafeed = {};
+   Datafeed.Container = function (updateFrequency) {
+    this._configuration = {
+     supports_search: false,
+     supports_group_request: false,
+     supported_resolutions: ['1', '5', '15', '60', '120', '1D', '1W'],        //支持的周期数组  
+     supports_marks: true,//来标识您的 datafeed 是否支持在K线上显示标记。  
+     supports_timescale_marks: true,//标识您的 datafeed 是否支持时间刻度标记。  
+     exchanges: ['myExchange1']//交易所对象数组
+    }
+   }
+   // onReady在图表Widget初始化之后立即调用，此方法可以设置图表库支持的图表配置  
+   Datafeed.Container.prototype.onReady = function (callback) {
+    let that = this;
+    if (this._configuration) {
+     setTimeout(function () {
+      callback(that._configuration)
+     }, 0)
+    } else {
+     this.on('configuration_ready', function () {
+      callback(that._configuration)
+     })
+    }
+   }      // 通过商品名称解析商品信息(SymbolInfo)，可以在此配置单个商品  
+   Datafeed.Container.prototype.resolveSymbol = function (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
+    console.log("商品名称")
+    Promise.resolve().then(() => {
+     onSymbolResolvedCallback({
+      name: '股票---',
+      ticker: symbolName,            //商品体系中此商品的唯一标识符
+      description: '',               //商品说明
+      session: '24x7',               //商品交易时间
+      timezone: 'Asia/Shanghai',     // 这个商品的交易所时区
+      pricescale: 100,               // 价格精度
+      minmov: 1,                     //最小波动
+      minmov2: 0,
+      type: 'bitcoin',               //  仪表的可选类型。// 
+      // 'exchange-traded': 'myExchange2',// 
+      // 'exchange-listed': "股票---",
+      has_intraday: true,            // 显示商品是否具有日内（分钟）历史数据
+      intraday_multipliers: ['1', '5', '15', '15', '60', '120'],     //日内周期(分钟单位)的数组
+      has_weekly_and_monthly: true,  // 显示商品是否具有以W和M为单位的历史数据
+      has_daily: true,               //显示商品是否具有以日为单位的历史数据// 
+      has_empty_bars: true,
+      force_session_rebuild: true,   //是否会随着当前交易而过滤K柱
+      has_no_volume: false,          //表示商品是否拥有成交量数据。
+      regular_session: '24x7'
+     })
+    })
+   }
+   // 从我们的API源获取图表数据并将其交给TradingView。  
+   Datafeed.Container.prototype.getBars = async function (
+    symbolInfo,
+    // 商品信息对象
+    resolution,
+    //（string （周期）
+    rangeStartDate,
+    // unix 时间戳, 最左边请求的K线时间
+    rangeEndDate,
+    // unix 时间戳, 最右边请求的K线时间
+    onDataCallback,
+    // 历史数据的回调函数。每次请求只应被调用一次。
+    onErrorCallback,
+    // 错误的回调函数。
+    firstDataRequest
+    //布尔值，以标识是否第一次调用此商品/周期的历史记录。  
+   ) {
+    that.localresolution = resolution
+    if (firstDataRequest) {
+     let bars = getChartData(resolution, rangeStartDate, rangeEndDate, firstDataRequest)
+     if (bars.length) {
+      onDataCallback(bars)
+      socket.send(openPrice)
+     } else {
+      onDataCallback([], { noData: true })// onErrorCallback([], { noData: true })  
+     }
+    } else {
+     onDataCallback([], { noData: true })          // onErrorCallback([], { noData: true })
+    }
+   }
+   // 订阅K线数据。图表库将调用onRealtimeCallback方法以更新实时数据。  
+
+   // subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback)
+   Datafeed.Container.prototype.subscribeBars = function (
+    // symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback
+    symbolInfo,
+    // // ObjectsymbolInfo对象
+    resolution,
+    // // StringK线周期
+    onRealtimeCallback,
+    // // Function将我们更新的K线传递给此回调以更新图表
+    subscriberUID,
+    // // String此交易对的唯一ID和表示订阅的分辨率，生成规则：ticker+'_'+周期
+    onResetCacheNeededCallback
+    // // Function调用次回调让图表再次请求历史K线数据  
+   ) {
+    // that.callbacks = [];
+    // that.callbacks.push(onRealtimeCallback);
+    socket.onmessage = function (event) {
+     console.log(JSON.parse(event.data),"data")
+     let data = JSON.parse(event.data)
+     data.time = new Date(data.time)
+     onRealtimeCallback(data)
+     // 处理数据
+    };
+    // that.updateBar(resolution, onRealtimeCallback);// 更改线型that.chart.activeChart().setChartType(1);
+   }
+   // 取消订阅K线数据  
+   Datafeed.Container.prototype.unsubscribeBars = function (listenerGUID) { }
+   return new Datafeed.Container()
+  };
+
+  window.addEventListener('DOMContentLoaded', initOnReady, false);
+ </script>
+</body>
+
+
+</html>
